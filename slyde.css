@@ -1,0 +1,107 @@
+/*
+    These are the style definitions needed by Slyde itself.
+    
+    Do not include your own definitions for styling the slides. Use user.css for that instead.
+ */
+
+html {
+    height:100%;
+}
+
+body {
+    height:100%;
+    width:100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+section {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    overflow: hidden;
+    visibility: hidden;
+
+    position:absolute;
+    bottom: 20px;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+
+    -moz-transition: 1.2s ease;
+    -o-transition: 1.2s ease;
+    -webkit-transition: 1.2s ease;
+    transition: 1.2s ease;
+}
+
+section:target {
+    visibility: visible;
+}
+
+
+nav {
+    position: absolute;
+    bottom: 10px;
+    right: 40px;
+}
+
+.increment {
+    visibility: hidden;
+}
+
+
+/*****************************************************************
+ * Effects
+ *****************************************************************/
+
+
+/* Fade effect */
+
+.fade section {
+    opacity:0;
+}
+
+.fade section:target {
+    opacity:1;
+}
+
+/* Slide from left effect */
+
+.slide-from-left  section {
+    left: -100%;
+    opacity: 0;
+    width: 94%;
+}
+
+.slide-from-left section:target {
+    left: 3%;
+    opacity: 1;
+}
+
+/* Slide from top effect */
+
+.slide-from-top  section {
+    height: 0;
+    opacity: 0;
+    top: -100%;
+}
+
+.slide-from-top section:target {
+    height: 94%;
+    opacity: 1;
+    top: 3%;
+}
+
+
+/* grow */
+
+.grow section {
+    top: 5%;
+    height: 0;
+    opacity: 0;
+}
+
+.grow section:target {
+    height: 90%;
+    opacity: 1;
+}
