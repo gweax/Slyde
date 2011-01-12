@@ -1,21 +1,12 @@
 /*
+    Add your own style definitions here. These are just exemplary.
+
     Colorscheme red:
     #f30813 #963c41 #710106 #f9424b #f97178
 */
 
-@font-face {
-    font-family: Copse;
-    font-style: normal;
-    font-weight: normal;
-    src: url("Copse-Regular.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: 'Cuprum';
-    font-style: normal;
-    font-weight: normal;
-    src: local('Cuprum'), url('Cuprum.ttf') format('truetype');
-}
+@import url('http://fonts.googleapis.com/css?family=Cuprum');
+@import url('http://fonts.googleapis.com/css?family=Copse');
 
 body {
     background: #710106;

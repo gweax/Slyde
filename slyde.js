@@ -1,4 +1,10 @@
-(function () {
+/*
+    This is the javascript needed by Slyde itself.
+    
+    Do not include your own javascript. Use user.js for that instead.
+ */
+
+ (function () {
 var slides = document.querySelectorAll("body > section");
 
 for (var i = 0, len = slides.length; i < len; i++) {
