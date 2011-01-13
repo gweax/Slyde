@@ -54,3 +54,7 @@ h1 {
     -webkit-transform: rotate(-3deg) translate(0, -25px);
     transform: rotate(-3deg) translate(0, -25px);
 }
+
+p.note {
+    font-size:0.5em;
+}
