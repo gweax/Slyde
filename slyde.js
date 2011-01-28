@@ -48,7 +48,7 @@ function addClass (element, className) {
         element.classList.add(className);
     }
     else {
-        element.className = element.className + className;
+        element.className = element.className + " " + className;
     }
 }
 
@@ -67,7 +67,7 @@ function forward() {
     hidden = getHiddenIncrementElements();
     
     if (hidden.length) {
-        hidden[0].classList.add("show");
+        addClass(hidden[0], "show");
     }
     else {
         nextSlide = +location.hash.substring(6) + 1;
@@ -82,7 +82,7 @@ function fastForward() {
     
     if (hidden.length) {
         hidden.forEach(function (inc) {
-            inc.classList.add("show");
+            addClass(inc, "show");
         });
     }
     else if (+location.hash.substring(6) < numberOfSlides) {
@@ -96,7 +96,7 @@ function rewind() {
     shown = getShownIncrementElements();
     
     if (shown.length) {
-        shown.pop().classList.remove("show");
+        removeClass(shown.pop(), "show");
     }
     else {
         previousSlide = +location.hash.substring(6) - 1;
@@ -111,7 +111,7 @@ function fastRewind() {
     
     if (shown.length) {
         shown.forEach(function (inc) {
-            inc.classList.remove("show");
+            removeClass(inc, "show");
         });
     }
     else if (location.hash !== "#slide1") {
