@@ -49,6 +49,10 @@ nav {
     visibility: hidden;
 }
 
+.increment.show {
+    visibility: visible;
+}
+
 
 /*****************************************************************
  * Effects

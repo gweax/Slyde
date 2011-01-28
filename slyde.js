@@ -5,9 +5,10 @@
  */
 
  (function () {
-var slides = document.querySelectorAll("body > section");
+var slides = document.querySelectorAll("body > section"),
+    numberOfSlides = slides.length;
 
-for (var i = 0, len = slides.length; i < len; i++) {
+for (var i = 0; i < numberOfSlides; i++) {
     var slide = slides[i];
     slide.id = "slide" + (i + 1);
     
@@ -24,7 +25,7 @@ for (var i = 0, len = slides.length; i < len; i++) {
     current.appendChild(document.createTextNode(" " + (i + 1) + " "));
     nav.appendChild(current);
     
-    if (i < len - 1) {
+    if (i < numberOfSlides - 1) {
         var next = document.createElement("a");
         next.appendChild(document.createTextNode(">"));
         next.href = "#slide" + (i + 2);
@@ -34,51 +35,68 @@ for (var i = 0, len = slides.length; i < len; i++) {
     slide.appendChild(nav);
 }
 
-function getIncrementElements (visible) {
-    visible = visible ? "visible" : "";
-
-    return [].filter.call(document.querySelectorAll(location.hash + " .increment"), function (element) {
-        return element.style.visibility === visible;
-    });
+function getHiddenIncrementElements () {
+    return [].slice.call(document.querySelectorAll(location.hash + " .increment:not(.show)"));
 }
 
+function getShownIncrementElements () {
+    return [].slice.call(document.querySelectorAll(location.hash + " .increment.show"));
+}
+
+function addClass (element, className) {
+    if (element.classList) {
+        element.classList.add(className);
+    }
+    else {
+        element.className = element.className + className;
+    }
+}
+
+function removeClass (element, className) {
+    if (element.classList) {
+        element.classList.remove(className);
+    }
+    else {
+        element.className = element.className.replace(className, "").trim();
+    }
+}
 
 function forward() {
     var hidden, nextSlide;
     
-    hidden = getIncrementElements(false);
+    hidden = getHiddenIncrementElements();
     
     if (hidden.length) {
-        hidden[0].style.visibility = "visible";
+        hidden[0].classList.add("show");
     }
     else {
         nextSlide = +location.hash.substring(6) + 1;
-        if (nextSlide <= len) {
+        if (nextSlide <= numberOfSlides) {
             location.hash = "#slide" + (nextSlide);
         }
     }
 }
 
 function fastForward() {
-    var hidden = getIncrementElements(false);
+    var hidden = getHiddenIncrementElements();
     
     if (hidden.length) {
         hidden.forEach(function (inc) {
-            inc.style.visibility = "visible";
+            inc.classList.add("show");
         });
     }
-    else if (+location.hash.substring(6) < len) {
-        location.hash = "#slide" + len;
+    else if (+location.hash.substring(6) < numberOfSlides) {
+        location.hash = "#slide" + numberOfSlides;
     }
 }
 
 function rewind() {
     var shown, previousSlide;
     
-    shown = getIncrementElements(true);
+    shown = getShownIncrementElements();
     
     if (shown.length) {
-        shown.pop().style.visibility = "";
+        shown.pop().classList.remove("show");
     }
     else {
         previousSlide = +location.hash.substring(6) - 1;
@@ -89,11 +107,11 @@ function rewind() {
 }
 
 function fastRewind() {
-    var shown = getIncrementElements(true);
+    var shown = getShownIncrementElements();
     
     if (shown.length) {
         shown.forEach(function (inc) {
-            inc.style.visibility = "";
+            inc.classList.remove("show");
         });
     }
     else if (location.hash !== "#slide1") {
