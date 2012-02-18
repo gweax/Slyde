@@ -16,9 +16,9 @@ body {
 }
 
 section {
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     overflow: hidden;
     visibility: hidden;
 
@@ -28,9 +28,10 @@ section {
     left: 20px;
     right: 20px;
 
-    -moz-transition: 1.2s ease;
-    -o-transition: 1.2s ease;
     -webkit-transition: 1.2s ease;
+    -moz-transition: 1.2s ease;
+    -ms-transition: 1.2s ease;
+    -o-transition: 1.2s ease;
     transition: 1.2s ease;
 }
 

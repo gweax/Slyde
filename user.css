@@ -10,14 +10,16 @@
 
 body {
     background: #710106;
-    background: -webkit-gradient(linear, left top, left bottom, from(#710106), to(#fee));
+    background: -webkit-linear-gradient(top, #710106, #fee);
     background: -moz-linear-gradient(top, #710106, #fee);
+    background: -ms-linear-gradient(top, #710106, #fee);
+    background: -o-linear-gradient(top, #710106, #fee);
+    background: linear-gradient(top, #710106, #fee);
     background-repeat:repeat-x;
 }
 
 section {
     background-color: rgba(255,255,255,0.9);
-    -moz-border-radius: 0 30px;
     border-radius: 0 30px;
     font-size:3.5em;
     font-family: Cuprum;
@@ -49,9 +51,10 @@ h1 {
     font-size: 1.3em;
     text-shadow: 2px 2px 1px #fff, 4px 4px 1px #963c41;
     
-    -mox-transform: rotate(-3deg) translate(0, -25px);
-    -o-transform: rotate(-3deg) translate(0, -25px);
     -webkit-transform: rotate(-3deg) translate(0, -25px);
+    -mox-transform: rotate(-3deg) translate(0, -25px);
+    -ms-transform: rotate(-3deg) translate(0, -25px);
+    -o-transform: rotate(-3deg) translate(0, -25px);
     transform: rotate(-3deg) translate(0, -25px);
 }
 
