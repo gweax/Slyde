@@ -12,7 +12,7 @@ var handleSlideChange = function () {
 
 window.onhashchange = handleSlideChange;
 
-// call directly for the first slide, since their might not have been
+// call directly for the first slide, since there might not have been
 // a hash*change* for that.
 handleSlideChange();
 
