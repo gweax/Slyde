@@ -84,19 +84,23 @@
         <section>
             <h1>Browsersupport</h1>
             <p>
-                Works best in Chrome and Safari. Animations are slow in Opera, but technically, it works. In Firefox 3.6
-                transitions do not work for some reason. Besides, Firefox lacks some CSS3 support.
-            </p>
-            <p>
-                It does not work in IE up to version 8. I do not care.
+                Works best in modern browsers that support the <code>vw</code>, <code>vh</code>, <code>transition</code>
+                and <code>calc()</code> features of CSS. That is Android 5+, Edge, Firefox, Chrome, Opera, Safari, Samsung
+                Internet and more, however neither Android 4 nor Opera Mini.
             </p>
         </section>
+
+        <section>
+            <h1>Scaling</h1>
+            <p>
+                The slides are automatically scaled to fit into the viewport, while maintaining an aspect ratio of 16 / 9.
+                The content is scaled accordingly. Note that you have to set all dimensions in <code>em</code> or <code>rem</code>.
+            </p>
         
         <section>
             <h1>Yet to come</h1>
             <p>
-                Currently, the font size is fixed. This is bad, when the browser window is small (or large). Adapting font
-                size to the available space is on the to-do list.
+                Nothing in the pipeline at the moment. Have any ideas? Feel free to <a href="https://github.com/gweax/Slyde/issues">open an issue</a>.
             </p>
         </section>
         
