@@ -4,27 +4,70 @@
     Do not include your own definitions for styling the slides. Use user.css for that instead.
  */
 
+/*
+ * We want to scale the slides to fit within the viewport, as large as possible.
+ * The slides should keep an aspect ratio of 16 / 9.
+ *
+ * So if the viewport aspect ratio is at least 16 / 9, the slide size is defined
+ * by the viewport height. If it is below, the slide size is defined by the
+ * viewport width.
+ *
+ * The idea is to set the root font size in dependency of the viewport size and
+ * everything else in relation to the root font size.
+ *
+ * A good value for the root font size is 5vh when the aspect ratio is at least
+ * 16 / 9, and a matching value in vw for a smaller aspect ratio.
+ */
+
 html {
   height: 100%;
-  font-size: 2vmin;
+  font-size: calc(5vw * 9 / 16);
+}
+
+@media screen and (min-aspect-ratio: 16 / 9) {
+  html {
+    font-size: 5vh;
+  }
 }
 
 body {
   height: 100%;
   width: 100%;
-  margin: auto;
+  margin: 0;
   overflow: hidden;
+}
+
+/*
+ * Size and position of slide
+ */
+section {
+  position: absolute;
+
+  /* Since the root font size is in relation to the aspect ratio and the
+   * viewport size, we calculate everything in relation to the root font size,
+   * that is in rem.
+   */
+
+  /* The height should be a little lower than the available space, so instead
+   * of 20rem (with 1rem = 5vh) we set it to 19rem */
+  height: 19rem;
+
+  /* The slides should not be vertically centered, but should stay at the top */
+  top: 0.5rem;
+
+  /* The width should be 16/9th of the height */
+  width: calc(19rem * 16 / 9);
+
+  /* The slide should be horizontally centered, so we set the left value to half
+   * the remainder of the viewport width and the slide width. */
+  left: calc((100vw - 19rem * 16 / 9) / 2);
 }
 
 section {
   box-sizing: border-box;
   overflow: hidden;
   visibility: hidden;
-  position: absolute;
-  bottom: 1em;
-  top: 1em;
-  left: 1em;
-  right: 1em;
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
