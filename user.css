@@ -239,7 +239,7 @@ pre > code {
     margin: 0;
 }
 
-.slide--center :first-child {
+.slide--center > :first-child {
     margin: auto;
 }
 

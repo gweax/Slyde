@@ -21,6 +21,7 @@
 
 html {
   height: 100%;
+  font-size: 2.8125vw;
   font-size: calc(5vw * 9 / 16);
 }
 
@@ -56,10 +57,12 @@ section {
   top: 0.5rem;
 
   /* The width should be 16/9th of the height */
+  width: 33.777778rem;
   width: calc(19rem * 16 / 9);
 
   /* The slide should be horizontally centered, so we set the left value to half
    * the remainder of the viewport width and the slide width. */
+  left: calc(50vw - 16.888889rem);
   left: calc((100vw - 19rem * 16 / 9) / 2);
 }
 
