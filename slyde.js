@@ -5,76 +5,81 @@
  */
 
 (function() {
-    var slides = document.querySelectorAll("body > section"),
-        numberOfSlides = slides.length;
+    var slides = Array.apply(null, document.querySelectorAll('body > section'));
 
-    for (var i = 0; i < numberOfSlides; i++) {
-        var slide = slides[i];
-        slide.id = "slide" + (i + 1);
+    function addId(slide, index) {
+        if (!slide.id) {
+            slide.id = 'slide' + (index + 1);
+        }
+    }
 
-        var nav = document.createElement("nav");
+    function createLink(href, content) {
+        var link = document.createElement('a');
+        link.href = href;
+        link.appendChild(document.createTextNode(content));
+
+        return link;
+    }
+
+    function addNavigation(slide, i, slides) {
+        var nav = document.createElement('nav');
 
         if (i > 0) {
-            var prev = document.createElement("a");
-            prev.appendChild(document.createTextNode("<"));
-            prev.href = "#slide" + i;
-            nav.appendChild(prev);
+            nav.appendChild(createLink('#' + slides[i - 1].id, '<'));
         }
 
-        var current = document.createElement("span");
-        current.appendChild(document.createTextNode(" " + (i + 1) + " "));
+        var current = document.createElement('span');
+        current.appendChild(document.createTextNode(' ' + (i + 1) + ' '));
         nav.appendChild(current);
 
-        if (i < numberOfSlides - 1) {
-            var next = document.createElement("a");
-            next.appendChild(document.createTextNode(">"));
-            next.href = "#slide" + (i + 2);
-            nav.appendChild(next);
+        if (i < slides.length - 1) {
+            nav.appendChild(createLink('#' + slides[i + 1].id, '>'));
         }
 
-        slide.appendChild(nav);
+        slide.appendChild(nav);        
+    }
+
+    function getCurrentSlide() {
+        return document.querySelector(location.hash);
+    }
+
+    function getNextSlide(slide) {
+        var index = slides.indexOf(slide);
+
+        return slides[index + 1];
+    }
+
+    function getPreviousSlide(slide) {
+        var index = slides.indexOf(slide);
+
+        return slides[index - 1];
     }
 
     function getHiddenIncrementElements(onCurrentSlideOnly) {
-        var root = onCurrentSlideOnly ? document.querySelector(location.hash) : document.body;
+        var root = onCurrentSlideOnly ? getCurrentSlide() : document.body;
 
         return Array.apply(null, root.querySelectorAll(".increment:not(.show)"));
     }
 
     function getShownIncrementElements(onCurrentSlideOnly) {
-        var root = onCurrentSlideOnly ? document.querySelector(location.hash) : document.body;
+        var root = onCurrentSlideOnly ? getCurrentSlide() : document.body;
 
         return Array.apply(null, root.querySelectorAll(".increment.show"));
     }
 
-    function addClass(element, className) {
-        if (element.classList) {
-            element.classList.add(className);
-        } else {
-            element.className = element.className + " " + className;
-        }
-    }
-
-    function removeClass(element, className) {
-        if (element.classList) {
-            element.classList.remove(className);
-        } else {
-            element.className = element.className.replace(className, "").trim();
-        }
-    }
-
     function forward() {
-        var hidden, nextSlide;
+        var hidden, nextSlide, currentSlide;
 
         hidden = getHiddenIncrementElements(true);
 
         if (hidden.length) {
             hidden[0].classList.add("show");
         } else {
-            nextSlide = +location.hash.substring(6) + 1;
+            currentSlide = getCurrentSlide();
+            nextSlide = getNextSlide(currentSlide);
 
-            if (nextSlide <= numberOfSlides) {
-                location.hash = "#slide" + (nextSlide);
+            if (nextSlide) {
+                location.hash = nextSlide.id;
             }
         }
     }
@@ -82,29 +87,26 @@
     function fastForward() {
         var hidden = getHiddenIncrementElements();
 
-        if (hidden.length) {
-            hidden.forEach(function(inc) {
-                inc.classList.add("show");
-            });
-        }
+        hidden.forEach(function(inc) {
+            inc.classList.add("show");
+        });
 
-        if (+location.hash.substring(6) < numberOfSlides) {
-            location.hash = "#slide" + numberOfSlides;
-        }
+        location.hash = slides[slides.length - 1].id;
     }
 
     function rewind() {
-        var shown, previousSlide;
+        var shown, previousSlide, currentSlide;
 
         shown = getShownIncrementElements(true);
 
         if (shown.length) {
-            shown.pop().classList.remove("show");
+            shown[shown.length - 1].classList.remove('show');
         } else {
-            previousSlide = +location.hash.substring(6) - 1;
+            currentSlide = getCurrentSlide();
+            previousSlide = getPreviousSlide(currentSlide);
 
-            if (previousSlide > 0) {
-                location.hash = "#slide" + previousSlide;
+            if (previousSlide) {
+                location.hash = previousSlide.id;
             }
         }
     }
@@ -112,19 +114,21 @@
     function fastRewind() {
         var shown = getShownIncrementElements();
 
-        if (shown.length) {
-            shown.forEach(function(inc) {
-                inc.classList.remove("show");
-            });
-        }
+        shown.forEach(function(inc) {
+            inc.classList.remove('show');
+        });
 
-        if (location.hash !== "#slide1") {
-            location.hash = "#slide1";
-        }
+        location.hash = slides[0].id;
     }
 
+    function getHash(slide) {
+        return '#' + slide.id;
+    }
 
-    document.addEventListener("keyup", function(event) {
+    slides.forEach(addId);
+    slides.forEach(addNavigation);
+
+    document.addEventListener('keyup', function(event) {
         if (/input|textarea/i.test(event.target.nodeName) && !(event.ctrlKey && event.shiftKey)) {
             return;
         }
@@ -149,7 +153,8 @@
         }
     }, false);
 
-    if (location.hash.indexOf("#slide") !== 0) {
-        location.hash = "#slide1";
+    if (slides.map(getHash).indexOf(location.hash) === -1) {
+        location.hash = slides[0].id;
     }
+
 })();
