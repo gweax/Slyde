@@ -55,16 +55,38 @@
         return slides[index - 1];
     }
 
+    function sortByOrder(a, b) {
+        return (a.order - b.order) || (a.originalOrder - b.originalOrder);
+    }
+
+    function mapForOrder(element, index) {
+        return {
+            element: element,
+            originalOrder: index,
+            order: element.getAttribute('data-increment') || 0
+        };
+    }
+
+    function getElement(item) {
+        return item.element;
+    }
+
     function getHiddenIncrementElements(onCurrentSlideOnly) {
         var root = onCurrentSlideOnly ? getCurrentSlide() : document.body;
 
-        return Array.apply(null, root.querySelectorAll(".increment:not(.show)"));
+        return Array.apply(null, root.querySelectorAll(".increment:not(.show)"))
+            .map(mapForOrder)
+            .sort(sortByOrder)
+            .map(getElement);
     }
 
     function getShownIncrementElements(onCurrentSlideOnly) {
         var root = onCurrentSlideOnly ? getCurrentSlide() : document.body;
 
-        return Array.apply(null, root.querySelectorAll(".increment.show"));
+        return Array.apply(null, root.querySelectorAll(".increment.show"))
+            .map(mapForOrder)
+            .sort(sortByOrder)
+            .map(getElement);
     }
 
     function forward() {
