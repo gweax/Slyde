@@ -5,6 +5,10 @@
  */
 
 (function() {
+    if (!(document.body.classList && document.querySelectorAll)) {
+        return;
+    }
+
     var slides = Array.apply(null, document.querySelectorAll('body > section'));
 
     function addId(slide, index) {
@@ -13,30 +17,39 @@
         }
     }
 
-    function createLink(href, content) {
+    function createLink(options) {
         var link = document.createElement('a');
-        link.href = href;
-        link.appendChild(document.createTextNode(content));
+        link.href = options.href;
+        link.rel = options.rel;
+        link.appendChild(document.createTextNode(options.text));
 
         return link;
     }
 
     function addNavigation(slide, i, slides) {
-        var nav = document.createElement('nav');
+        var nav = slide.querySelector('nav');
 
-        if (i > 0) {
-            nav.appendChild(createLink('#' + slides[i - 1].id, '<'));
+        if (!nav) {
+            nav = document.createElement('nav');
+
+            if (i > 0) {
+                nav.appendChild(createLink({
+                    href: '#' + slides[i - 1].id,
+                    text: '<',
+                    rel: 'prev'
+                }));
+            }
+
+            if (i < slides.length - 1) {
+                nav.appendChild(createLink({
+                    href: '#' + slides[i + 1].id,
+                    text: '>',
+                    rel: 'next'
+                }));
+            }
+
+            slide.appendChild(nav);
         }
-
-        var current = document.createElement('span');
-        current.appendChild(document.createTextNode(' ' + (i + 1) + ' '));
-        nav.appendChild(current);
-
-        if (i < slides.length - 1) {
-            nav.appendChild(createLink('#' + slides[i + 1].id, '>'));
-        }
-
-        slide.appendChild(nav);        
     }
 
     function getCurrentSlide() {
@@ -147,10 +160,21 @@
         return '#' + slide.id;
     }
 
+    // add a class name to the root element, so the incremental elements will
+    // be hidden until shown via the script
+    document.documentElement.classList.add('js');
+
+    // add missing ids to slides
     slides.forEach(addId);
+
+    // add missing navigation to slides
     slides.forEach(addNavigation);
 
     document.addEventListener('keyup', function(event) {
+        // When inside an input or textarea, we assume the cursor should be
+        // moved.
+        // However, in combination with the ctrl or shift key, we do handle the
+        // event.
         if (/input|textarea/i.test(event.target.nodeName) && !(event.ctrlKey && event.shiftKey)) {
             return;
         }
@@ -166,15 +190,31 @@
             fastForward();
         }
         // left arrow or page up
-        else if (key === 37 || key === 33) {
+        else if (key === 37) {
+            // do not mess with the history navigation the browser offers via
+            // the alt and arrow keys
+            if (!event.altKey) {
+                rewind();
+            }
+        }
+        // page up
+        else if (key === 33) {
             rewind();
         }
-        // right arrow or page down
-        else if (key === 39 || key === 34) {
+        // right arrow
+        else if (key === 39) {
+            if (!event.altKey) {
+                forward();
+            }
+        }
+        // page down
+        else if (key === 34) {
             forward();
         }
     }, false);
 
+    // If there is no hash or there is no slide matching the hash, open the
+    // first slide
     if (slides.map(getHash).indexOf(location.hash) === -1) {
         location.hash = slides[0].id;
     }

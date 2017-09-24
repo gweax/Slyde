@@ -7,66 +7,143 @@
         <link rel="stylesheet" href="user.css">
     </head>
     
-    <!-- Try classname "fade", "slide-from-left", "slide-from-top", "grow" or none -->
+    <!--
+        You can set different animations to switch from one slide to another.
+        Try classname "fade", "slide-from-left", "slide-from-top", "grow" or
+        none.
+
+        You can set the speed of the animation by adding one classname of
+        "fast" or "slow" or none.
+    -->
     <body class="slide-from-left">
-        <section>
+
+        <!--
+            A slide is a section, which is a direct child of the body. Using a
+            section element is a good idea, since it allows an independent
+            structure of h1-h6 elements.
+
+            Each slide has to have an id. This is needed to make a
+            JavaScript-free navigation work.
+
+            Of course, if you assume that JavaScript is available, it is fine to
+            omit the ids. Slyde will then generate all missing ids.
+        -->
+        <section id="slide1">
             <h1>Slyde</h1>
             <p>
-                Slyde is a web based presentation tool that uses advanced technologies like HTML5 and CSS3.
+                Slyde is a web based presentation tool that even functions without JavaScript.
             </p>
-        </section>
-        
-        <section>
-            <h1>Transitions</h1>
             <p>
-                There are several effects to switch from one slide to another. Try changing the class name of the body
-                element.
+                See the source of this document for documentation on the how and why.
             </p>
+
+            <!--
+                To allow a JavaScript-free navigation, you have to add links to
+                each slide, linking to the next (and if you want, the previous)
+                slide.
+
+                By adding the rel attribute, Slyde will style the links
+                unobtrusively.
+
+                Again, if JavaScript is available, Slyde will generate
+                navigation links to all slides that miss them.
+            -->
+            <nav>
+                <a href="#slide2" rel="next">&gt;</a>
+            </nav>
         </section>
         
-        <section>
-            <h1>Transitions - CSS only</h1>
-            <p>
-                CSS3 is a cool way to allow for transition effects. There is no Javascript involved in that part. However,
-                for more fancy effects, some Javascript might be required.
-            </p>
-        </section>
-        
-        <section>
+        <section id="slide2">
             <h1>Navigation</h1>
             <p>
-                The navigation elements on the slides are generated automatically. Therefore, you do not have to adapt every
-                slide if you want to insert a new slide between existing ones.
+                Each slide needs an id. Using this id, each slide can be targeted via the location's hash. This slide
+                for example has the id <code>slide2</code>, which maches the hash of the URL.
             </p>
+            <nav>
+                <a href="#slide1" rel="prev">&lt;</a>
+                <a href="#slide3" rel="next">&gt;</a>
+            </nav>
+        </section>
+
+        <section id="slide3">
+            <h1>Linking to a specific slide</h1>
+            <p>
+                Since each slide has an id, you can directly link to any slide within a presentation. This - again -
+                works without Javascript.
+            </p>
+            <nav>
+                <a href="#slide2" rel="prev">&lt;</a>
+                <a href="#slide4" rel="next">&gt;</a>
+            </nav>
+        </section>
+
+        <section id="slide4">
+            <h1>Scaling</h1>
+            <p>
+                The slides are automatically scaled to fit into the viewport, while maintaining an aspect ratio of
+                16 / 9. The content is scaled accordingly. Note that you have to set all dimensions in <code>em</code>
+                or <code>rem</code>.
+            </p>
+            <nav>
+                <a href="#slide3" rel="prev">&lt;</a>
+                <a href="#slide5" rel="next">&gt;</a>
+            </nav>
+        </section>
+
+        <section id="slide5">
+            <h1>Transitions</h1>
+            <p>
+                Transitions between slides is done with CSS.
+            </p>
+            <nav>
+                <a href="#slide4" rel="prev">&lt;</a>
+                <a href="#slide6" rel="next">&gt;</a>
+            </nav>
         </section>
         
-        <section>
-            <h1>Key navigation</h1>
+        <section id="slide6">
+            <h1>Keyboard navigation</h1>
             <p>
-                You can navigate through the slides either by using the generated link elements or by using the keyboard.
+                If JavaScript is available, Slyde will add a keyboard navigation. Use the arrow keys to navigate
+                through the slides.
             </p>
             <p>
                 Try the Page Down, Page Up, Home and End keys as well as the left and right arrow keys.
             </p>
+            <nav>
+                <a href="#slide5" rel="prev">&lt;</a>
+                <a href="#slide7" rel="next">&gt;</a>
+            </nav>
         </section>
         
-        <section>
-            <h1>Linking to a specific slide</h1>
+        <section id="slide7">
+            <h1>Slide counter</h1>
             <p>
-                Navigation is handled through the location's hash value, so you can directly link to any slide within a
-                presentation. Note that this - again - is done by CSS only without any Javascript*.
+                The slide numbers are automatically generated by CSS.
             </p>
-            <p class="note">
-                * Well, sort of. The ids needed as anchors are generated by Javascript.
-            </p>
+            <nav>
+                <a href="#slide6" rel="prev">&lt;</a>
+                <a href="#slide8" rel="next">&gt;</a>
+            </nav>
         </section>
-        
-        <section>
+
+        <section id="slide8">
             <h1>Point by point</h1>
             <p>
-                Sometimes you wish several elements like list items to appear one after the other. This is easy, just add
-                <code>class="increment"</code> to those elements.
+                Sometimes you wish several elements like list items to appear one after the other. This is easy, just
+                add <code>class="increment"</code> to those elements.
             </p>
+            <p>
+                When Javascript is not available, all incremental elements will be shown directly.
+            </p>
+            <nav>
+                <a href="#slide7" rel="prev">&lt;</a>
+                <a href="#slide9" rel="next">&gt;</a>
+            </nav>
+        </section>
+        
+        <section id="slide9">
+            <h1>Point by point</h1>
             <ul>
                 <li class="increment">This was hidden</li>
                 <li class="increment">...as was this</li>
@@ -78,49 +155,63 @@
                 <li class="increment" data-increment="2">This comes second</li>
                 <li class="increment" data-increment="1">This comes first</li>
             </ul>
+                <nav>
+                <a href="#slide8" rel="prev">&lt;</a>
+                <a href="#slide10" rel="next">&gt;</a>
+            </nav>
         </section>
-        
-        <section>
+
+        <section id="slide10">
             <h1>Customization</h1>
             <p>
                 You can create your own layouts using the <code>user.css</code> file. You can add behaviour using the
-                <code>user.js</code> file. Try listening to the onhashchange event to react on switching slides.
+                <code>user.js</code> file. Try listening to the <code>onhashchange</code> event to react on switching
+                slides.
             </p>
+            <nav>
+                <a href="#slide9" rel="prev">&lt;</a>
+                <a href="#slide11" rel="next">&gt;</a>
+            </nav>
         </section>
         
-        <section>
-            <h1>Browsersupport</h1>
+        <section id="slide11">
+            <h1>Browser support</h1>
             <p>
                 Works best in modern browsers that support the <code>vw</code>, <code>vh</code>, <code>transition</code>
-                and <code>calc()</code> features of CSS. That is Android 5+, Edge, Firefox, Chrome, Opera, Safari, Samsung
-                Internet and more, however neither Android 4 nor Opera Mini.
+                and <code>calc()</code> features of CSS. That is Android 4.4+, Internet Explorer 11, Edge, Firefox,
+                Chrome, Opera, Safari, Samsung Internet and more, however neither Android 4 nor Opera Mini.
             </p>
-        </section>
-
-        <section>
-            <h1>Scaling</h1>
-            <p>
-                The slides are automatically scaled to fit into the viewport, while maintaining an aspect ratio of 16 / 9.
-                The content is scaled accordingly. Note that you have to set all dimensions in <code>em</code> or <code>rem</code>.
-            </p>
+            <nav>
+                <a href="#slide10" rel="prev">&lt;</a>
+                <a href="#slide12" rel="next">&gt;</a>
+            </nav>
         </section>
         
-        <section>
+        <section id="slide12">
             <h1>Yet to come</h1>
             <p>
-                Nothing in the pipeline at the moment. Have any ideas? Feel free to <a href="https://github.com/gweax/Slyde/issues">open an issue</a>.
+                Nothing in the pipeline at the moment. Have any ideas? Feel free to
+                <a href="https://github.com/gweax/Slyde/issues">open an issue</a>.
             </p>
+            <nav>
+                <a href="#slide11" rel="prev">&lt;</a>
+                <a href="#slide13" rel="next">&gt;</a>
+            </nav>
         </section>
-        
-        <section>
+
+        <section id="slide13">
             <h1>Get it</h1>
             <p>
                 Either save this file and the linked resources or download it at
                 <a href="http://github.com/gweax/Slyde">github.com/gweax/Slyde</a>.
             </p>
+            <nav>
+                <a href="#slide12" rel="prev">&lt;</a>
+                <a href="#slide14" rel="next">&gt;</a>
+            </nav>
         </section>
-        
-        <section>
+
+        <section id="slide14">
             <h1>Contact</h1>
             <p>
                 You can contact me via mail or twitter:
@@ -129,8 +220,24 @@
                 <a href="mailto:matt@gweax.de">matt@gweax.de</a><br>
                 <a href="http://twitter.com/gweax">twitter.com/gweax</a>
             </p>
+            <nav>
+                <a href="#slide13" rel="prev">&lt;</a>
+            </nav>
         </section>
-                
+        
+        <!--
+            To work completely work without JavaScript, you either have to start
+            the presentation by linking to the first slide via the URL, or you
+            have to include a link to the first slide, which will be hidden once
+            the slideshow started.
+
+            This link has to come as a sibbling of all slides, after the last
+            slide.
+
+            Of course, with JavaScript, the first slide is shown directly.
+        -->
+        <a href="#slide1" class="start-link">Start presentation</a>
+
         <script src="slyde.js"></script>
         <script src="user.js"></script>
     </body>

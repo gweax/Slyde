@@ -135,22 +135,21 @@ body.theme-orange a:hover {
 
 /* End Themes */
 
-section {
+body > section {
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 0 1em;
     font-family: Cuprum, sans-serif;
     padding: 1em;
+
+    /* make the slide a little smaller, so the page background is visible */
+    height: 18rem;
+    width: 32rem; /* calc(18rem / 9 * 16) */
+    top: calc(50vh - 9rem);
+    left: calc(50vw - 16rem);
 }
 
-section > * {
+body > section > * {
     margin: 0 0 1em;
-}
-
-nav {
-    font-size: 0.5em;
-    position: absolute;
-    bottom: 1em;
-    right: 2em;
 }
 
 a {
@@ -162,10 +161,6 @@ h1 {
     font-size: 1.5em;
     transform: rotate(-3deg);
     transform-origin: 50% 0;
-}
-
-.note {
-    font-size: 0.5em;
 }
 
 section > img {
@@ -221,31 +216,6 @@ pre {
 
 pre > code {
     display: block;
-}
-
-.slide--title hgroup {
-    margin: auto;
-    transform: rotate(-3deg);
-    transform-origin: 50% 0;
-}
-
-.slide--title hgroup h1 {
-    transform: none;
-    font-size: 2em;
-    margin-bottom: 0;
-}
-
-.slide--title hgroup p {
-    margin: 0;
-}
-
-.slide--center > :first-child {
-    margin: auto;
-}
-
-.slide--center h1 {
-    font-size: 2.2rem;
-    transform: none;
 }
 
 blockquote::after {

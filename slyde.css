@@ -8,9 +8,14 @@
  * We want to scale the slides to fit within the viewport, as large as possible.
  * The slides should keep an aspect ratio of 16 / 9.
  *
- * So if the viewport aspect ratio is at least 16 / 9, the slide size is defined
+ * If the viewport aspect ratio is at least 16 / 9, the slide size is defined
  * by the viewport height. If it is below, the slide size is defined by the
  * viewport width.
+ *
+ * To be able to scale the content of the slides together with the slides, we
+ * either need a unit relative to the dimension of the slides (which does not
+ * exist) or a relative unit we use both for the slide and the content. This
+ * unit is rem.
  *
  * The idea is to set the root font size in dependency of the viewport size and
  * everything else in relation to the root font size.
@@ -21,8 +26,12 @@
 
 html {
   height: 100%;
-  font-size: 2.8125vw;
-  font-size: calc(5vw * 9 / 16);
+  /* Android 4.4 does not support division and multiplication in calc, so we use
+     the end result directly
+   */
+  font-size: 2.8125vw; /* font-size: calc(5vw * 9 / 16); */
+
+  background-color: black;
 }
 
 @media screen and (min-aspect-ratio: 16 / 9) {
@@ -41,7 +50,7 @@ body {
 /*
  * Size and position of slide
  */
-section {
+body > section {
   position: absolute;
 
   /* Since the root font size is in relation to the aspect ratio and the
@@ -49,44 +58,98 @@ section {
    * that is in rem.
    */
 
-  /* The height should be a little lower than the available space, so instead
-   * of 20rem (with 1rem = 5vh) we set it to 19rem */
-  height: 19rem;
-
-  /* The slides should not be vertically centered, but should stay at the top */
-  top: 0.5rem;
+  height: 20rem;
 
   /* The width should be 16/9th of the height */
-  width: 33.777778rem;
-  width: calc(19rem * 16 / 9);
+  width: 35.555556rem; /* width: calc(20rem * 16 / 9); */
+
+
+  /* The slides should be vertically centered, so we set the top value to half
+   * the remainder of the viewport height and the slide height. */
+  top: calc(50vh - 10rem);
 
   /* The slide should be horizontally centered, so we set the left value to half
    * the remainder of the viewport width and the slide width. */
-  left: calc(50vw - 16.888889rem);
-  left: calc((100vw - 19rem * 16 / 9) / 2);
+  left: calc(50vw - 17.777778rem); /* left: calc((100vw - 20rem * 16 / 9) / 2); */
 }
 
-section {
+body > section {
   box-sizing: border-box;
   overflow: hidden;
-  visibility: hidden;
 
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
+  padding: 1rem;
+  background-color: white;
 }
 
-section:target {
-  visibility: visible;
+/*
+  Each slide has an id. If the id matches the hash part of the location, the
+  :target pseudo class is applied. So we hide every slide, that is not selected
+  via the hash.
+  We hide the slides by setting the visibility to hidden, because this property
+  can be animated (the hidden state is applied at the end of the animation,
+  whereas display: none would be applied at the beginning).
+ */
+body > section:not(:target) {
+  visibility: hidden;
 }
 
-nav {
+/* Slide numbers */
+body > section {
+  counter-increment: slide;
+}
+
+body > section::after {
+  content: counter(slide);
   position: absolute;
-  bottom: 1em;
-  right: 2em;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 0.7rem;
 }
 
-.increment {
+/* Navigation */
+
+body > section > nav [rel] {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  background-color: rgba(80, 80, 80, 0.2);
+  box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s ease;
+  opacity: 0.1;
+}
+
+body > section > nav [rel]:hover,
+body > section > nav [rel]:focus {
+  opacity: 1;
+}
+
+body > section > nav [rel="prev"] {
+  left: 0;
+}
+body > section > nav [rel="next"] {
+  right: 0;
+}
+
+body > .start-link {
+  display: block;
+  text-align:center;
+  padding: 1rem;
+  background-color: white;
+}
+
+/* Hide the start link, when there is a targeted slide before */
+body > section:target ~ .start-link {
+  display: none;
+}
+
+html.js .increment {
   visibility: hidden;
 }
 
@@ -99,18 +162,18 @@ nav {
  * Speeds
  *****************************************************************/
 
-section {
+ body > section {
   transition-duration: 0.8s;
   transition-timing-function: ease;
 }
 
-.fast section,
-section.fast {
+body.fast > section,
+body > section.fast {
   transition-duration: 0.5s;
 }
 
-.slow section,
-section.slow {
+body.slow > section,
+body > section.slow {
   transition-duration: 1.2s;
 }
 
@@ -120,38 +183,52 @@ section.slow {
  *****************************************************************/
 
 /* Fade effect */
-.fade section {
+body.fade > section {
   transition-property: opacity, visibility;
   opacity: 0;
 }
-.fade section:target {
+body.fade > section:target {
   opacity: 1;
 }
 
 /* Slide from left effect */
-.slide-from-left section {
+body.slide-from-left > section {
   transition-property: transform, visibility;
   transform: translateX(-100vw);
 }
-.slide-from-left section:target {
+body.slide-from-left > section:target {
   transform: translateX(0);
 }
 
 /* Slide from top effect */
-.slide-from-top section {
+body.slide-from-top > section {
   transition-property: transform, visibility;
   transform: translateY(-100vh);
 }
-.slide-from-top section:target {
+body.slide-from-top > section:target {
   transform: translateY(0);
 }
 
 /* grow */
-.grow section {
+body.grow > section {
   transition-property: transform;
   transform: scale(0);
 }
-.grow section:target {
+body.grow > section:target {
   transition-property: transform, visibility;
   transform: scale(1);
 }
+
+/* Where is the "slide-in-from-right, slide-out-to-left" effect?
+ *
+ * Well, the browser interferes. When setting the hash of the location (which we
+ * use for navigation between slides), the browser tries to scroll to the
+ * targeted element. When the slide to show slides in from the right side, the
+ * browser scrolls horizontally. Unfortunately, the slide animation an the
+ * browser scroll are not synchronized, leaving the viewport in an intermediate
+ * (read: messy) state, where the page is scrolled to the right, but the slide
+ * is animated to the left.
+ *
+ * I think there might by a solution (maybe using a margin-left of 100vw?), in
+ * the meantime I removed this animation.
+ */
