@@ -153,7 +153,7 @@ html.js .increment {
   visibility: hidden;
 }
 
-.increment.show {
+html.js .increment.show {
   visibility: visible;
 }
 
